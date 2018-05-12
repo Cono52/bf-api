@@ -9,10 +9,14 @@ import scrapeArticles from './scrapeArticles';
 
 const app = express();
 
+const corsOptions = {
+  origin: 'https://cono52.github.io',
+};
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 app.get('/getsites', (req, res) => {
