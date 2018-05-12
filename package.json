@@ -1,0 +1,44 @@
+{
+  "name": "flapjack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "watch": "nodemon --watch ./models --watch app.js --watch server.js --ignore dist/ --exec npm start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+    "start": "npm run build && node dist/server.js",
+    "ds": "docker run -it -p 8000:8000 --rm --env-file ./variables.env flapjack-api-dev"
+  },
+  "quokka": {
+    "babel": true
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "author": "Conor O'Flanagan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "jquery": "^3.3.1",
+    "jsdom": "^11.9.0",
+    "lodash": "^4.17.10",
+    "mongoose": "^5.0.16",
+    "morgan": "^1.9.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "rimraf": "^2.6.2",
+    "request": "^2.85.0"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "nodemon": "^1.17.3"
+  }
+}
