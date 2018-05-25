@@ -9,7 +9,9 @@
 # production
 /dist
 
-variables.env
+variables.prod.env
+variables.dev.env
+app.yaml
 
 # misc
 .DS_Store

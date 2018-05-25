@@ -7,6 +7,7 @@
     "watch": "nodemon --watch ./models --watch app.js --watch server.js --ignore dist/ --exec npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+    "deploy": "rimraf app.yaml && node app-yaml-generator.js && gcloud app deploy",
     "start": "npm run build && node dist/server.js",
     "ds": "docker run -it -p 8000:8000 --rm --env-file ./variables.env flapjack-api-dev"
   },

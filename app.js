@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
+import env from './envConfig';
 
 import SiteEntry from './models/SiteEntry';
 import Article from './models/Article';
@@ -10,7 +11,7 @@ import scrapeArticles from './scrapeArticles';
 const app = express();
 
 const corsOptions = {
-  origin: 'https://cono52.github.io',
+  origin: env.ALLOWED_HOST,
 };
 
 app.use(bodyParser.urlencoded({ extended: false }));
