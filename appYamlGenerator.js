@@ -20,7 +20,5 @@ env_variables:
       return console.log(error);
     }
     console.log('GCP config generated -> app.yaml');
-    return 0;
   });
-  return 0;
 });
