@@ -8,7 +8,7 @@ export default new GraphQLObjectType({
     articles: {
       type: new GraphQLList(ArticleType),
       resolve: () => {
-        const articles = Article.find().limit(1000).exec();
+        const articles = Article.getArticles(1000);
         if (!articles) {
           throw new Error('Error');
         }

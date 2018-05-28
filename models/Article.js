@@ -13,9 +13,7 @@ const articleSchema = new mongoose.Schema({
 
 const Article = mongoose.model('articleSchema', articleSchema, 'articles');
 
-Article.getArticles = (callback, limit) => {
-  Article.find({}, '-_id title date link', callback).sort({ rank: -1 }).limit(limit);
-};
+Article.getArticles = limit => Article.find().sort({ rank: -1 }).limit(limit);
 
 Article.isDuplicate = (id, callback) => {
   Article.find({ title: id }).distinct('title', callback);
@@ -30,13 +28,12 @@ Article.saveBatch = (articles) => {
         dbArticle.date = article.date;
         dbArticle.link = article.link;
         dbArticle.up_votes = 1;
-        dbArticle.save((err) => {
-          if (err) {
+        dbArticle.save()
+          .then((savedArticle) => {
+            console.log(`Saved New ${i}: ${savedArticle.title}`);
+          }).catch((err) => {
             console.log(err);
-          } else {
-            console.log(`Saved New ${i}: ${article.title}`);
-          }
-        });
+          });
       }
 
       // After saving last new article, re-rank all articles
@@ -51,13 +48,12 @@ Article.deleteOldest = (num = 1) => {
   Article.find({}).sort({ createdAt: 1 }).limit(num).exec()
     .then(arts => arts.map(art => art._id))
     .then(artIds => artIds.forEach(id =>
-      Article.findByIdAndRemove(id, (err) => {
-        if (err) {
+      Article.findByIdAndRemove(id)
+        .then((deletedArticle) => {
+          console.log(`Delete item with title: ${deletedArticle.title}`);
+        }).catch((err) => {
           console.log(err);
-        } else {
-          console.log(`Delete item with id: ${id}`);
-        }
-      })));
+        })));
 };
 
 // Article.addUpVotes = () => {
@@ -87,11 +83,7 @@ Article.rankAll = () => {
   Article.find({}).sort({ createdAt: -1 }).exec()
     .then(arts => arts.forEach((art) => {
       art.rank = rank(art);
-      art.save((err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
+      art.save().catch(err => console.log(err));
     }));
   console.timeEnd('Ranked articles');
 };
