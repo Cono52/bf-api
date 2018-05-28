@@ -2,11 +2,16 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
+import graphqlHTTP from 'express-graphql';
+
+import ArticleSchema from './graphql/index';
+
 import env from './envConfig';
 
 import SiteEntry from './models/SiteEntry';
 import Article from './models/Article';
 import scrapeArticles from './scrapeArticles';
+
 
 const app = express();
 
@@ -18,6 +23,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
 app.use(cors(corsOptions));
+
+app.use('/graphql', cors(), graphqlHTTP({
+  schema: ArticleSchema,
+  rootValue: global,
+  graphiql: true
+}));
 
 
 app.get('/getsites', (req, res) => {

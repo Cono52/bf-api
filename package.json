@@ -26,6 +26,8 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
+    "graphql": "^0.13.2",
     "jquery": "^3.3.1",
     "jsdom": "^11.10.0",
     "lodash": "^4.17.10",
