@@ -10,9 +10,13 @@ passport.use('register', new LocalStrategy({
 }, async (email, password, done) => {
   try {
     // Save the information provided by the user to the the database
-    const user = await User.create({ email, password });
-    // Send the user information to the next middleware
-    return done(null, user);
+    const existsAlready = await User.findOne({ email });
+    if (!existsAlready) {
+      const user = await User.create({ email, password });
+      // Send the user information to the next middleware
+      return done(null, user);
+    }
+    return done(null, false, { message: 'Email Already Registered' });
   } catch (error) {
     done(error);
   }

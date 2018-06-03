@@ -68,10 +68,14 @@ app.get('/deleteOldest', (req, res) => {
   res.json(`Deleted ${parseInt(req.query.size, 10) || 1} articles`);
 });
 
-app.post('/register', passport.authenticate('register', { session: false }), async (req, res) => {
-  res.json({
-    message: 'Signup successful'
-  });
+app.post('/register', async (req, res) => {
+  passport.authenticate(
+    'register',
+    { session: false },
+    async (err, user, message) => {
+      if (message) { res.json(401, message); } else { res.json({ message: 'Registration Successful!' }); }
+    }
+  )(req, res);
 });
 
 app.post('/login', async (req, res) => {
