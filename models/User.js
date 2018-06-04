@@ -1,10 +1,18 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import validator from 'validator';
 
 mongoose.Promise = global.Promise;
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
+  email: {
+    type: String,
+    required: true,
+    lowercase: true,
+    unique: true,
+    trim: true,
+    validate: [validator.isEmail, 'Invalid Email Address']
+  },
   password: { type: String, required: true }
 });
 

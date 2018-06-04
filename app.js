@@ -73,7 +73,7 @@ app.post('/register', async (req, res) => {
     'register',
     { session: false },
     async (err, user, message) => {
-      if (message) { res.json(401, message); } else { res.json({ message: 'Registration Successful!' }); }
+      if (message) { res.status(401).json(message); } else { res.json({ message: 'Registration Successful!' }); }
     }
   )(req, res);
 });
@@ -83,7 +83,7 @@ app.post('/login', async (req, res) => {
     console.log(message);
     try {
       if (err || !user) {
-        return res.json(401, message);
+        return res.status(401).json(message);
       }
       req.login(user, { session: false }, async (error) => {
         if (error) return res.json({ error });

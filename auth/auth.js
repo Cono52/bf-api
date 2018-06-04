@@ -12,13 +12,15 @@ passport.use('register', new LocalStrategy({
     // Save the information provided by the user to the the database
     const existsAlready = await User.findOne({ email });
     if (!existsAlready) {
-      const user = await User.create({ email, password });
+      return await User.create({ email, password })
+        .then(user => done(null, false, user)).catch((err) => {
+          done(null, false, { message: err.errors.email.message });
+        });
       // Send the user information to the next middleware
-      return done(null, user);
     }
     return done(null, false, { message: 'Email Already Registered' });
   } catch (error) {
-    done(error);
+    return done(error);
   }
 }));
 
