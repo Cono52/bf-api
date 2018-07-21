@@ -47,13 +47,12 @@ Article.saveBatch = (articles) => {
 Article.deleteOldest = (num = 1) => {
   Article.find({}).sort({ createdAt: 1 }).limit(num).exec()
     .then(arts => arts.map(art => art._id))
-    .then(artIds => artIds.forEach(id =>
-      Article.findByIdAndRemove(id)
-        .then((deletedArticle) => {
-          console.log(`Delete item with title: ${deletedArticle.title}`);
-        }).catch((err) => {
-          console.log(err);
-        })));
+    .then(artIds => artIds.forEach(id => Article.findByIdAndRemove(id)
+      .then((deletedArticle) => {
+        console.log(`Delete item with title: ${deletedArticle.title}`);
+      }).catch((err) => {
+        console.log(err);
+      })));
 };
 
 // Article.addUpVotes = () => {
@@ -88,10 +87,8 @@ Article.rankAll = () => {
   console.timeEnd('Ranked articles');
 };
 
-Article.getLatestBatch = () =>
-  Article.findOne().sort({ createdAt: -1 })
-    .exec()
-    .then(latestArticle =>
-      Article.find({ createdAt: { $gte: latestArticle.createdAt.setSeconds(0) } }).exec());
+Article.getLatestBatch = () => Article.findOne().sort({ createdAt: -1 })
+  .exec()
+  .then(latestArticle => Article.find({ createdAt: { $gte: latestArticle.createdAt.setSeconds(0) } }).exec());
 
 export default Article;
