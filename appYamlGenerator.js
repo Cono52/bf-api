@@ -1,3 +1,8 @@
+
+
+// This file creates the yaml config that google cloud platform uses for setting up its env.
+// We essentially copy the production environment virables into this file.
+
 const fs = require('fs');
 
 fs.readFile('./variables.prod.env', 'utf8', (err, data) => {
