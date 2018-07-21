@@ -1,7 +1,7 @@
 
 
 // This file creates the yaml config that google cloud platform uses for setting up its env.
-// We essentially copy the production environment virables into this file.
+// Here, we essentially copy the production environment variables into the yaml.
 
 const fs = require('fs');
 
