@@ -1,12 +1,27 @@
 {
-  "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "extends": ["airbnb", "plugin:flowtype/recommended", "prettier"],
   "env": {
-    "node": true
+    "browser": true,
+    "jest": true
   },
   "rules": {
+    "max-len": ["error", { "code": 130 }],
+    "no-console":"off",
     "no-underscore-dangle": "off",
-    "no-console": "off",
-    "comma-dangle": "off",
-    "consistent-return": "off"
-  }
+    "react/jsx-filename-extension": "off",
+    "react/sort-comp": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/require-default-props": "off",
+    "react/default-props-match-prop-types": "off",
+    "react/button-has-type": "off",
+    "react/no-multi-comp": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/label-has-for": "off",
+    "import/prefer-default-export": "off",
+    "import/no-cycle": "off",
+    "consistent-return": "off",
+    "flowtype/space-after-type-colon": "off"
+  },
+  "plugins": ["flowtype"]
 }

@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
-import validator from 'validator';
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import validator from "validator";
 
 mongoose.Promise = global.Promise;
 
@@ -11,12 +11,12 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     unique: true,
     trim: true,
-    validate: [validator.isEmail, 'Invalid Email Address']
+    validate: [validator.isEmail, "Invalid Email Address"]
   },
   password: { type: String, required: true }
 });
 
-userSchema.pre('save', async function hashPassword(next) {
+userSchema.pre("save", async function hashPassword(next) {
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
   next();
@@ -28,6 +28,6 @@ userSchema.methods.isValidPassword = async function isValidPassword(password) {
   return compare;
 };
 
-const User = mongoose.model('userSchema', userSchema, 'user');
+const User = mongoose.model("userSchema", userSchema, "user");
 
 export default User;
