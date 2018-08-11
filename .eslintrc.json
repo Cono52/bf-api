@@ -1,18 +1,15 @@
 {
   "parser": "babel-eslint",
-  "extends": ["airbnb", "plugin:flowtype/recommended", "prettier"],
+  "extends": ["standard", "prettier"],
   "env": {
-    "browser": true,
-    "jest": true
+    "browser": true
   },
   "rules": {
     "max-len": ["error", { "code": 130 }],
-    "no-console":"off",
+    "no-console": "off",
     "no-underscore-dangle": "off",
     "import/prefer-default-export": "off",
     "import/no-cycle": "off",
-    "consistent-return": "off",
-    "flowtype/space-after-type-colon": "off"
-  },
-  "plugins": ["flowtype"]
+    "consistent-return": "off"
+  }
 }

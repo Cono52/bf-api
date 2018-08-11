@@ -1,4 +1,3 @@
-/* @flow */
 import jsdom from "jsdom";
 import { promisify } from "util";
 import request from "request";
@@ -6,23 +5,21 @@ import flatten from "lodash/flatten";
 import uniqBy from "lodash/uniqBy";
 import jquery from "jquery";
 
-import { type Site, type Article } from "./flow-types";
-
 const asyncRequest = promisify(request);
 
-const makeRequest = (url: string): Promise<*> =>
+const makeRequest = url =>
   asyncRequest(url, null)
     .then(res => Promise.resolve(res))
     .catch(err => Promise.reject(err));
 
-const formatUrl = (host: string, slug: string): string => {
+const formatUrl = (host, slug) => {
   if (slug.indexOf(host) > -1) {
     return slug;
   }
   return host + slug;
 };
 
-const parseData = (html: string, host: string): Article[] => {
+const parseData = (html, host) => {
   const virtualConsole = new jsdom.VirtualConsole();
   const dom = new jsdom.JSDOM(html, {
     virtualConsole
@@ -74,7 +71,7 @@ const parseData = (html: string, host: string): Article[] => {
   return articles;
 };
 
-const scrapeArticles = (siteList: Site[]): Promise<Article[]> =>
+const scrapeArticles = siteList =>
   Promise.all(
     flatten(
       siteList.map(site => {

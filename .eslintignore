@@ -1,6 +1,4 @@
-flow-typed/
 coverage/
-flow-coverage/
 node_modules/
 build/
 dist/

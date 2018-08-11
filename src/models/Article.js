@@ -27,6 +27,9 @@ Article.isDuplicate = (id, callback) => {
 Article.saveBatch = articles => {
   articles.forEach((article, i) => {
     Article.isDuplicate(article.title, (error, title) => {
+      if (error) {
+        throw error;
+      }
       if (title.length < 1) {
         const dbArticle = new Article();
         dbArticle.title = article.title;

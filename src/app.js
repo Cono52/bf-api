@@ -10,6 +10,7 @@ import env from "../envConfig";
 
 import SiteEntry from "./models/SiteEntry";
 import Article from "./models/Article";
+import User from "./models/User";
 import scrapeArticles from "./scrapeArticles";
 
 const app = express();
@@ -58,6 +59,9 @@ app.get("/aggregate", (req, res) => {
 
 app.get("/getarticles", (req, res) => {
   Article.getArticles((err, articles) => {
+    if (err) {
+      throw err;
+    }
     res.json(articles);
   }, parseInt(req.query.size, 10) || 10);
 });
@@ -67,7 +71,17 @@ app.get("/deleteOldest", (req, res) => {
   res.json(`Deleted ${parseInt(req.query.size, 10) || 1} articles`);
 });
 
-app.post("/register", (req, res) => {});
+app.post("/register", async (req, res) => {
+  // check if already registered
+  const user = await User.find({ email: req.body.email });
+  if (user) {
+    res.status(400).send({ message: "Email already registered" });
+  } else {
+    res.send("added");
+  }
+  console.log(user);
+  // if not registered then register the person and send them back a login token
+});
 
 app.post("/login", (req, res) => {
   res.send({ token: "test" });

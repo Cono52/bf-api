@@ -1,4 +1,3 @@
 {
-  "printWidth": 130,
-  "parser": "flow"
+  "printWidth": 130
 }
