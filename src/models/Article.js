@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 mongoose.Promise = global.Promise;
 
-const articleSchema = new mongoose.Schema(
+const ArticleSchema = new mongoose.Schema(
   {
     title: String,
     up_votes: Number,
@@ -13,18 +13,16 @@ const articleSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Article = mongoose.model("articleSchema", articleSchema, "articles");
+ArticleSchema.methods.isDuplicate = (id, callback) => {
+  Article.find({ title: id }).distinct("title", callback);
+};
 
-Article.getArticles = limit =>
+ArticleSchema.statics.getArticles = limit =>
   Article.find()
     .sort({ rank: -1 })
     .limit(limit);
 
-Article.isDuplicate = (id, callback) => {
-  Article.find({ title: id }).distinct("title", callback);
-};
-
-Article.saveBatch = articles => {
+ArticleSchema.statics.saveBatch = articles => {
   articles.forEach((article, i) => {
     Article.isDuplicate(article.title, (error, title) => {
       if (error) {
@@ -54,7 +52,7 @@ Article.saveBatch = articles => {
   });
 };
 
-Article.deleteOldest = (num = 1) => {
+ArticleSchema.statics.deleteOldest = (num = 1) => {
   Article.find({})
     .sort({ createdAt: 1 })
     .limit(num)
@@ -95,7 +93,7 @@ const rank = article => {
   return p / (t + 2) ** g;
 };
 
-Article.rankAll = () => {
+ArticleSchema.statics.rankAll = () => {
   console.time("Ranked articles");
   Article.find({})
     .sort({ createdAt: -1 })
@@ -109,10 +107,12 @@ Article.rankAll = () => {
   console.timeEnd("Ranked articles");
 };
 
-Article.getLatestBatch = () =>
+ArticleSchema.statics.getLatestBatch = () =>
   Article.findOne()
     .sort({ createdAt: -1 })
     .exec()
     .then(latestArticle => Article.find({ createdAt: { $gte: latestArticle.createdAt.setSeconds(0) } }).exec());
+
+const Article = mongoose.model("ArticleSchema", ArticleSchema, "articles");
 
 export default Article;
