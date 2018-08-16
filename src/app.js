@@ -6,14 +6,12 @@ import cors from "cors";
 import graphqlHTTP from "express-graphql";
 import ArticleSchema from "./graphql/index";
 
-import env from "../envConfig";
-
 import { UserRouter, AdminRouter, ArticleRouter } from "./routes";
 
 const app = express();
 
 const corsOptions = {
-  origin: env.ALLOWED_HOST
+  origin: process.env.ALLOWED_HOST
 };
 
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -22,10 +22,13 @@ UserSchema.pre("save", async function hashPassword(next) {
   next();
 });
 
-UserSchema.methods.isValidPassword = async function isValidPassword(password) {
+UserSchema.statics.findByEmail = function findByEmail(email) {
+  return User.findOne({ email }).exec();
+};
+
+UserSchema.methods.isValidPassword = function isValidPassword(password) {
   const user = this;
-  const compare = await bcrypt.compare(password, user.password);
-  return compare;
+  return bcrypt.compare(password, user.password);
 };
 
 const User = mongoose.model("userSchema", UserSchema, "user");
