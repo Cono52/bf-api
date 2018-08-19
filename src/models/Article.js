@@ -13,7 +13,7 @@ const ArticleSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-ArticleSchema.methods.isDuplicate = (id, callback) => {
+ArticleSchema.statics.checkTitleExists = (id, callback) => {
   Article.find({ title: id }).distinct("title", callback);
 };
 
@@ -22,17 +22,17 @@ ArticleSchema.statics.getArticles = limit =>
     .sort({ rank: -1 })
     .limit(limit);
 
-ArticleSchema.statics.saveBatch = articles => {
-  articles.forEach((article, i) => {
-    Article.isDuplicate(article.title, (error, title) => {
+ArticleSchema.statics.saveBatch = batch => {
+  batch.forEach((articleObject, i) => {
+    Article.checkTitleExists(articleObject.title, (error, title) => {
       if (error) {
         throw error;
       }
       if (title.length < 1) {
         const dbArticle = new Article();
-        dbArticle.title = article.title;
-        dbArticle.date = article.date;
-        dbArticle.link = article.link;
+        dbArticle.title = articleObject.title;
+        dbArticle.date = articleObject.date;
+        dbArticle.link = articleObject.link;
         dbArticle.up_votes = 1;
         dbArticle
           .save()
@@ -45,7 +45,7 @@ ArticleSchema.statics.saveBatch = articles => {
       }
 
       // After saving last new article, re-rank all articles
-      if (i === articles.length - 1) {
+      if (i === batch.length - 1) {
         Article.rankAll();
       }
     });
