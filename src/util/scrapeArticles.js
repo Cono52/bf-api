@@ -19,6 +19,7 @@ const formatUrl = (host, slug) => {
   return host + slug;
 };
 
+// Converts the scrapped html into plain article objects
 const parseData = (html, host) => {
   const virtualConsole = new jsdom.VirtualConsole();
   const dom = new jsdom.JSDOM(html, {
