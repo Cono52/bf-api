@@ -29,11 +29,12 @@ ArticleSchema.statics.saveBatch = batch => {
         throw error;
       }
       if (title.length < 1) {
-        const dbArticle = new Article();
-        dbArticle.title = articleObject.title;
-        dbArticle.date = articleObject.date;
-        dbArticle.link = articleObject.link;
-        dbArticle.up_votes = 1;
+        const dbArticle = new Article({
+          title,
+          date: articleObject.date,
+          link: articleObject.link,
+          up_votes: 1
+        });
         dbArticle
           .save()
           .then(savedArticle => {
