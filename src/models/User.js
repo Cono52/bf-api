@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     validate: [validator.isEmail, "Invalid Email Address"]
   },
+  admin: { type: Boolean, required: false },
   password: { type: String, required: true }
 });
 

@@ -8,21 +8,28 @@ const UserRouter = Router();
 
 UserRouter.post("/register", async (req, res) => {
   // check if already registered
-  const user = await User.find({ email: req.body.email });
-  if (user) {
-    res.status(400).send({ message: "Email already registered" });
-  } else {
-    res.send("added");
+  try {
+    const { email, password } = req.body;
+    const user = await User.findByEmail(email);
+    if (user) {
+      res.status(400).send({ message: "Email already registered" });
+    } else {
+      const newUser = new User({ email, password });
+      newUser.save();
+      res.status(200).send("Registered");
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Something went wrong.");
   }
-  console.log(user);
-  // if not registered then register the person and send them back a login token
 });
 
 UserRouter.post("/login", async (req, res) => {
   try {
     const user = await User.findByEmail(req.body.email);
     if (user && (await user.isValidPassword(req.body.password))) {
-      const token = jwt.sign({ email: user.email, admin: user.admin || undefined }, process.env.SECRET, { expiresIn: "1h" });
+      const payload = { email: user.email, admin: user.admin };
+      const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1h" });
       res.send({ token });
     } else {
       res.status(401).send({ message: "The username or password is incorrect" });
