@@ -30,7 +30,7 @@ ArticleSchema.statics.saveBatch = batch => {
       }
       if (title.length < 1) {
         const dbArticle = new Article({
-          title,
+          title: articleObject.title,
           date: articleObject.date,
           link: articleObject.link,
           up_votes: 1
